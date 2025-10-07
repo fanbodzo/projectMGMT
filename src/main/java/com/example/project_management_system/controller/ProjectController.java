@@ -52,9 +52,6 @@ public class ProjectController {
         }
     }
 
-
-
-
     @PostMapping("/{projectId}/members/{userId}")
     public ResponseEntity<Project> addMember(@PathVariable Long projectId, @PathVariable Long userId) {
         try{

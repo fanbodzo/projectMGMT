@@ -17,10 +17,9 @@ public class CommentDto {
     private String content;
     private LocalDateTime created_at;
     //to bedzie do zaimplementwoania narazei jest dziura w JSON przez to
+
     private UserDto author;
     private TaskDto task;
 
-    private Long taskId;
-    private Long authorId;
 
 }

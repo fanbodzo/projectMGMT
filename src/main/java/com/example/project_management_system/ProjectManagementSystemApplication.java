@@ -11,7 +11,9 @@ public class ProjectManagementSystemApplication {
 	}
 
 	//TODO : zrobic zagniezdzone dto narazie jest tak zrobione zeby dzialalo ladnie bo chce przejsc dalej
+	// zaczynam od task , wystarczy wstryzkanc inny mapper mega proste a robie to jawnie a nie jawnie bylo by moze latwiej nie wiem
+	// moze mniej robotty by bylo ale dziala jak nalezy
 	// jest to calkiem latwe wiec zrobie to pozniej chce sie uczyc dalej
-	// zanim wrzcue projekt na github ladnieopisac po angl co i jak siedzi oraz w obisdianie rozpisac
+	// po zrobieniu zagniezdzenia zrobic metody na robienie list z dto w mapperach , przyklad task mapper
 
 }

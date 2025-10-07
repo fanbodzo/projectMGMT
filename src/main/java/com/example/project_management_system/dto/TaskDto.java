@@ -19,8 +19,10 @@ public class TaskDto {
     private String priority;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private Long assigneeId;
+    //to odziwo dziala
     private Long projectId;
+
+    private UserDto assignee;
 
 
 }

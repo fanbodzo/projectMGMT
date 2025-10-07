@@ -26,6 +26,9 @@ public class TaskController {
         this.commentService = commentService;
     }
     //ulepszony http get z filtrem na id przypisanego uzytkownika lub status zadania
+    //TODO zrobic cos takiego podobnego dla innych rzeczy jak komentarze
+    // dla kazdego uzytkonika np komentarz przez uzytkownika wyszukany
+    // uzytkownikow dla kazdego zadania i komentarz tez mozna
     @GetMapping
     public List<TaskDto> getAllTasksOrSearchTask(@RequestParam(required = false) String status
             ,@RequestParam(required = false) Long assigneeId) {
