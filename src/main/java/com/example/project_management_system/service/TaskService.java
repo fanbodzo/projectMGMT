@@ -133,7 +133,7 @@ public class TaskService {
 //            tasks = taskRepository.findByAssigneesId(assigneeId);
 //        }else{
 //            //jak nic nie znajdzie bo obydwa null to daje wszstko
-//            //co chyba nie jest zbyt wydajne ale narazie moze byc
+//            //co chyba nie jest zbyt wydajne ale narazie moze byc.
 //            tasks = taskRepository.findAll();
 //        }
 //
