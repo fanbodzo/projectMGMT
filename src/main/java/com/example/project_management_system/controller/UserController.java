@@ -35,6 +35,7 @@ public class UserController {
         }
     }
 
+
     @PostMapping
     //to do ogarniecia bedzie w poznijesyzm kroku ajk bede ogarnaic kazade exception narazie response entityy dla kazdego
     public ResponseEntity<?> createUser(@RequestBody User user) {
