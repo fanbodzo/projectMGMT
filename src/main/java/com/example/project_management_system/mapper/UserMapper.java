@@ -1,6 +1,7 @@
 package com.example.project_management_system.mapper;
 
 import com.example.project_management_system.User;
+import com.example.project_management_system.dto.CreateUserRequestDto;
 import com.example.project_management_system.dto.UserDto;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +34,17 @@ public class UserMapper {
         return users.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public User toEntity(CreateUserRequestDto user) {
+        if(user==null) return null;
+        User userEntity = new User();
+        userEntity.setUsername(user.getUsername());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPassword(user.getPassword());
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+
+        return userEntity;
     }
 }

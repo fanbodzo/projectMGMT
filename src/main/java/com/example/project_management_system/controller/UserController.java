@@ -1,8 +1,11 @@
 package com.example.project_management_system.controller;
 
 import com.example.project_management_system.User;
+import com.example.project_management_system.dto.CreateUserRequestDto;
 import com.example.project_management_system.dto.UserDto;
+import com.example.project_management_system.mapper.UserMapper;
 import com.example.project_management_system.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,13 @@ import java.util.List;
 //obsluga zadan webowych mapowanie etc
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
+
     //wstyrzkniecie user service
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping
@@ -37,11 +43,23 @@ public class UserController {
 
 
     @PostMapping
-    //to do ogarniecia bedzie w poznijesyzm kroku ajk bede ogarnaic kazade exception narazie response entityy dla kazdego
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    //@valid mowi ze zanim wykona metode to bierze obiekt i sprawdza go
+    //czy spelnia wszykie reguly zdefiniowane w jego klasie
+    //czyli zamin odpale mtode kaze wziac ten obiekt requestDto i dac go do validatora czyli bean validtor
+    //bean validator patrzy na klase CreateUserRequestDto i sprawdza adnotacje walidacyjne
+    //username ,haslo i email w tymprzypadku czy sie zgadza
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequestDto requestDto) {
+        //w zamianie na encje choidz o to ze
+        //requestDto to jest jakby na kartce napisane che takeigo itakiego usera
+        //dobra spoko walidator patrzy czy jest git i jak mowi ze git to leci dalej
+        //tutaj wchodzi kolejny posrednik ktory ma elemty zeby go stworzyc daltego tworyzmy encje
+        //ale dalczego encja? bo encja ma haslo do uzytkonika
+        //i zeby user trafil do bazy musi przejsc prze zrepoztytroum przeciez
+        //to dajemy userService stworz tego usera a serwis odowluje sie do repozytirum i zaspisuje tam uzytkonika
         try{
+            User user = userMapper.toEntity(requestDto);
             User createdUser = userService.createUser(user);
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+            return new ResponseEntity<>(userMapper.toDto(createdUser), HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
         }
