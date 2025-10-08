@@ -33,8 +33,8 @@ public class ProjectService {
         this.projectMapper = projectMapper;
     }
 
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public List<ProjectDto> getAllProjects() {
+        return projectMapper.toDtoList(projectRepository.findAll());
     }
 
     //bardzo niebezpieczne .get() bo jak bedzie pusta wartsoc to rzuci wyjatkiem

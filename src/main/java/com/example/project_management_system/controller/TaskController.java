@@ -36,8 +36,13 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public TaskDto getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
+        try{
+            TaskDto taskDto = taskService.getTaskById(id);
+            return ResponseEntity.ok(taskDto);
+        }catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentDto>> getTaskComments(@PathVariable Long id) {
@@ -51,12 +56,24 @@ public class TaskController {
 
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
-        return taskService.updateTask(id, task);
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+        try{
+            Task updatedTask = taskService.updateTask(id, task);
+            return ResponseEntity.ok(updatedTask);
+        }catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
+
     }
+
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTaskById(id);
+    public ResponseEntity<TaskDto> deleteTask(@PathVariable Long id) {
+        try{
+            taskService.deleteTaskById(id);
+            return ResponseEntity.ok().build();
+        }catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //to byla moja wersja free style

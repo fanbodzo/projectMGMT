@@ -6,6 +6,10 @@ import com.example.project_management_system.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ProjectMapper {
     private final TaskMapper taskMapper;
@@ -31,8 +35,15 @@ public class ProjectMapper {
         if(project.getMembers() != null) {
             projectDto.setMembers(userMapper.toDtoSet(project.getMembers()));
         }
-
         return projectDto;
+    }
+    public List<ProjectDto> toDtoList(List<Project> projects) {
+        if(projects == null) {
+            return null;
+        }
+        return projects.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
 }

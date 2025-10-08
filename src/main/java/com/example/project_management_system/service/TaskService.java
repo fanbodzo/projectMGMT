@@ -34,9 +34,9 @@ public class TaskService {
         this.userMapper = userMapper;
         this.taskMapper = taskMapper;
     }
-
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    //w odstwienie idzie nie jest potrzebe juz bo uzywam zaawasowenego szukania
+    public List<TaskDto> getAllTasks() {
+        return taskMapper.toDtoList(taskRepository.findAll());
     }
 //    tak samo jak userService uze dto
 //    public Task getTaskById(Long id) {

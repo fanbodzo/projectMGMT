@@ -65,9 +65,10 @@ public class UserService {
                 user.setPassword("hashed_"+user.getPassword());
                 return userRepository.save(user);
             }
-            return null;
+            throw new IllegalArgumentException("Email address already in use");
         }
-        return null;
+        throw new IllegalArgumentException("Username already exists");
     }
+
 
 }

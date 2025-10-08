@@ -14,18 +14,32 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
     private CommentService commentService;
+
     @Autowired
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
+
     @GetMapping("/tasks/{taskId}")
-    public List<CommentDto> getCommentsForTask(@PathVariable Long taskId) {
-        return commentService.getCommentsForTask(taskId);
+    public ResponseEntity<List<CommentDto>> getCommentsForTask(@PathVariable Long taskId) {
+        try{
+            List<CommentDto> comments = commentService.getCommentsForTask(taskId);
+            return ResponseEntity.ok(comments);
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
+
     @GetMapping("/{userId}")
-    public List<CommentDto> getCommentsForUser(@PathVariable Long userId) {
-        return commentService.getCommentsForUser(userId);
+    public ResponseEntity<List<CommentDto>> getCommentsForUser(@PathVariable Long userId) {
+        try{
+            List<CommentDto> comments = commentService.getCommentsForUser(userId);
+            return ResponseEntity.ok(comments);
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
+
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment,
                                         @RequestParam Long userId,
