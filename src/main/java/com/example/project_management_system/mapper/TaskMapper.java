@@ -1,6 +1,7 @@
 package com.example.project_management_system.mapper;
 
 import com.example.project_management_system.Task;
+import com.example.project_management_system.dto.CreateTaskRequestDto;
 import com.example.project_management_system.dto.TaskDto;
 import com.example.project_management_system.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,17 @@ public class TaskMapper {
         return tasks.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+    public Task toEntity(CreateTaskRequestDto task) {
+        if(task==null){return null;}
+        Task taskEntity = new Task();
+        taskEntity.setTitle(task.getTitle());
+        taskEntity.setDescription(task.getDescription());
+        taskEntity.setPriority(task.getPriority());
+        taskEntity.setStatus(task.getStatus());
+        taskEntity.setUpdatedAt(task.getUpdated_at());
+        taskEntity.setCreatedAt(task.getCreated_at());
+        return taskEntity;
     }
 
 }

@@ -3,10 +3,13 @@ package com.example.project_management_system.controller;
 import com.example.project_management_system.Comment;
 import com.example.project_management_system.Task;
 import com.example.project_management_system.dto.CommentDto;
+import com.example.project_management_system.dto.CreateTaskRequestDto;
 import com.example.project_management_system.dto.TaskDto;
+import com.example.project_management_system.mapper.TaskMapper;
 import com.example.project_management_system.service.CommentService;
 import com.example.project_management_system.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +22,13 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
     private final CommentService commentService;
+    private final TaskMapper taskMapper;
 
     @Autowired
-    public TaskController(TaskService taskService, CommentService commentService) {
+    public TaskController(TaskService taskService, CommentService commentService, TaskMapper taskMapper) {
         this.taskService = taskService;
         this.commentService = commentService;
+        this.taskMapper = taskMapper;
     }
     //ulepszony http get z filtrem na id przypisanego uzytkownika lub status zadania
     //TODO zrobic cos takiego podobnego dla innych rzeczy jak komentarze
@@ -82,16 +87,28 @@ public class TaskController {
 //        taskService.createTask(task, projectId, assigneeId);
 //    }
     //wersja poprawna
+//    @PostMapping
+//    public ResponseEntity<Task> createTask(@RequestBody Task task,
+//                                     @RequestParam Long projectId,
+//                                     @RequestParam(required = false) Long assigneeId) {
+//        //tutaj dzieje sie cos innego niz zawsze odwolyniee sie do serwisu
+//        Task createdTask = taskService.createTask(task, projectId, assigneeId);
+//        // ResponseEntity sprawia ze mozemy zwaracas sobie sttus w postmanie przez json
+//        //dopkladne wyjasnieni zrobie sobie w notatkach w obisdianeie jak bd tluamczyc prjekt
+//        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+//    }
+    //wersja z walidacja
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task,
-                                     @RequestParam Long projectId,
-                                     @RequestParam(required = false) Long assigneeId) {
-        //tutaj dzieje sie cos innego niz zawsze odwolyniee sie do serwisu
-        Task createdTask = taskService.createTask(task, projectId, assigneeId);
-        // ResponseEntity sprawia ze mozemy zwaracas sobie sttus w postmanie przez json
-        //dopkladne wyjasnieni zrobie sobie w notatkach w obisdianeie jak bd tluamczyc prjekt
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    public ResponseEntity<?> createTask(@Valid @RequestBody CreateTaskRequestDto requestDto,
+                                        @RequestParam(required = false) Long assigneeId,
+                                        @RequestParam Long projectId) {
+        try{
+            Task task = taskMapper.toEntity(requestDto);
+            Task createdTask = taskService.createTask(task, assigneeId, projectId);
+            return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
-
 
 }

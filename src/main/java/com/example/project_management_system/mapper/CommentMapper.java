@@ -2,6 +2,7 @@ package com.example.project_management_system.mapper;
 
 import com.example.project_management_system.Comment;
 import com.example.project_management_system.dto.CommentDto;
+import com.example.project_management_system.dto.CreateCommentRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,5 +41,12 @@ public class CommentMapper {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
+//    public Comment toEntity(CreateCommentRequestDto comment) {
+//        if(comment == null) {
+//            return null;
+//        }
+//        Comment commentEntity = new Comment();
+//        commentEntity.setTask(taskMapper.toDto());
+//    }
 
 }

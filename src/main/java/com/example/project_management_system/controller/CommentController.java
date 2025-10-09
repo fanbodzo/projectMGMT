@@ -2,7 +2,10 @@ package com.example.project_management_system.controller;
 
 import com.example.project_management_system.Comment;
 import com.example.project_management_system.dto.CommentDto;
+import com.example.project_management_system.dto.CreateCommentRequestDto;
+import com.example.project_management_system.mapper.CommentMapper;
 import com.example.project_management_system.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {
+    private final CommentMapper commentMapper;
     private CommentService commentService;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, CommentMapper commentMapper) {
         this.commentService = commentService;
+        this.commentMapper = commentMapper;
     }
 
     @GetMapping("/tasks/{taskId}")
@@ -40,11 +45,18 @@ public class CommentController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment,
-                                        @RequestParam Long userId,
-                                        @RequestParam Long taskId) {
-        Comment createdComment = commentService.createComment(comment, userId, taskId);
-        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
-    }
+//
+//    @PostMapping
+//    public ResponseEntity<Comment> createComment(@RequestBody Comment comment,
+//                                        @RequestParam Long userId,
+//                                        @RequestParam Long taskId) {
+//        Comment createdComment = commentService.createComment(comment, userId, taskId);
+//        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+//    }
+
+    //nowa metoda z walidacja
+//    @PostMapping
+//    public ResponseEntity<?> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto){
+//        Comment comment = commentMapper.
+//    }
 }
