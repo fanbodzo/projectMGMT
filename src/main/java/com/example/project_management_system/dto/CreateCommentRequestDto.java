@@ -11,10 +11,10 @@ public class CreateCommentRequestDto {
     //dalem nrazie long ale wyoadlao by dac obiekty jezlei mam robic walidacje czy sie zgadzaja
     //ale no narazie porzucam to ide na zajecia
     @NotBlank(message = "Comment must be divided into task")
-    private Long task;
+    private Long taskId;
 
     @NotBlank(message = "Comment must be divided into user")
-    private Long user;
+    private Long userId;
 
 
 

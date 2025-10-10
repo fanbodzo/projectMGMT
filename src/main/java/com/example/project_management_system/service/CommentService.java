@@ -4,10 +4,12 @@ import com.example.project_management_system.Comment;
 import com.example.project_management_system.Task;
 import com.example.project_management_system.User;
 import com.example.project_management_system.dto.CommentDto;
+import com.example.project_management_system.dto.CreateCommentRequestDto;
 import com.example.project_management_system.mapper.CommentMapper;
 import com.example.project_management_system.repository.CommentRepository;
 import com.example.project_management_system.repository.TaskRepository;
 import com.example.project_management_system.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,13 +45,28 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    public Comment createComment(Comment comment , Long taskId, Long authorId) {
-        //zaimplementowac
-        Task foundTask = taskRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found"));
+//    public Comment createComment(Comment comment , Long taskId, Long authorId) {
+//        //walidacja istnienia relacji v
+//        Task foundTask = taskRepository.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found"));
+//        comment.setTask(foundTask);
+//        User foundUser = userRepository.findById(authorId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+//        comment.setAuthor(foundUser);
+//        return commentRepository.save(comment);
+//    }
+    //nowa metoda w sensie z walidaca w serwisie bgo robilem w controlerze jak debil zapomnaielm sie
+    public CommentDto createComment(@Valid CreateCommentRequestDto requestDto) {
+        Task foundTask = taskRepository.findById(requestDto.getTaskId()).orElseThrow(() -> new IllegalArgumentException("Task not found"));
+
+        User foundUser = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Comment comment = commentMapper.toEntity(requestDto);
+
         comment.setTask(foundTask);
-        User foundUser = userRepository.findById(authorId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         comment.setAuthor(foundUser);
-        return commentRepository.save(comment);
+
+        Comment savedComment = commentRepository.save(comment);
+
+        return commentMapper.toDto(savedComment);
     }
 
     //uzywane w TaskController zeby wsiwetlic wsyzksie komentarze dla danego taska

@@ -41,12 +41,15 @@ public class CommentMapper {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
-//    public Comment toEntity(CreateCommentRequestDto comment) {
-//        if(comment == null) {
-//            return null;
-//        }
-//        Comment commentEntity = new Comment();
-//        commentEntity.setTask(taskMapper.toDto());
-//    }
+    public Comment toEntity(CreateCommentRequestDto comment) {
+        if(comment == null) {
+            return null;
+        }
+        Comment commentEntity = new Comment();
+        commentEntity.setContent(comment.getContent());
+        //nie robic tego tutaj tutaj tylko proste pola w serwisie logika tam uzuplenie pola encji
+//        commentEntity.setTaskId(comment.getTaskId());
+//        commentEntity.setAuthorId(comment.getUserId());
+    }
 
 }
