@@ -98,17 +98,24 @@ public class TaskController {
 //        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
 //    }
     //wersja z walidacja
+//    @PostMapping
+//    public ResponseEntity<?> createTask(@Valid @RequestBody CreateTaskRequestDto requestDto,
+//                                        @RequestParam(required = false) Long assigneeId,
+//                                        @RequestParam Long projectId) {
+//        try{
+//            Task task = taskMapper.toEntity(requestDto);
+//            Task createdTask = taskService.createTask(task, assigneeId, projectId);
+//            return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+//        }catch(IllegalArgumentException e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
+    //walidacja z wykoaniem walidacji i przypisaniia id w serwisie
     @PostMapping
-    public ResponseEntity<?> createTask(@Valid @RequestBody CreateTaskRequestDto requestDto,
-                                        @RequestParam(required = false) Long assigneeId,
-                                        @RequestParam Long projectId) {
-        try{
-            Task task = taskMapper.toEntity(requestDto);
-            Task createdTask = taskService.createTask(task, assigneeId, projectId);
-            return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
-        }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<TaskDto> createTask(@RequestBody CreateTaskRequestDto requestDto) {
+        TaskDto taskDto = taskService.createTask(requestDto);
+
+        return new ResponseEntity<>(taskDto, HttpStatus.CREATED);
     }
 
 }

@@ -15,12 +15,15 @@ public class CreateTaskRequestDto {
 
     @NotBlank(message = "Task must be in project")
     private Long projectId;
+    @NotBlank(message = "Task msy have an user associated with it")
+    private Long assigneeId;
 
     private String description;
     private String status;
     private String priority;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private UserDto assignee;
+
+
 
 }

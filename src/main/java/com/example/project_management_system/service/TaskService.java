@@ -3,6 +3,7 @@ package com.example.project_management_system.service;
 import com.example.project_management_system.Project;
 import com.example.project_management_system.Task;
 import com.example.project_management_system.User;
+import com.example.project_management_system.dto.CreateTaskRequestDto;
 import com.example.project_management_system.dto.TaskDto;
 import com.example.project_management_system.mapper.TaskMapper;
 import com.example.project_management_system.mapper.UserMapper;
@@ -10,6 +11,7 @@ import com.example.project_management_system.repository.ProjectRepository;
 import com.example.project_management_system.repository.TaskRepository;
 import com.example.project_management_system.repository.UserRepository;
 import com.example.project_management_system.repository.specification.TaskSpecification;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -91,6 +93,19 @@ public class TaskService {
         User foundUser = userRepository.findById(assigneeId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         task.setAssignees(foundUser);
         return taskRepository.save(task);
+    }
+    public TaskDto createTask(@Valid CreateTaskRequestDto requestDto){
+        Project foundProject = projectRepository.findById(requestDto.getProjectId()).orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        User foundUser = userRepository.findById(requestDto.getAssigneeId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Task task = taskMapper.toEntity(requestDto);
+        task.setProject(foundProject);
+        task.setAssignees(foundUser);
+
+        Task savedTask = taskRepository.save(task);
+
+        return taskMapper.toDto(savedTask);
+
     }
 
     //uzywane w ProjectController zeby wsiwetlic wsyzksie taski dla danego projektu

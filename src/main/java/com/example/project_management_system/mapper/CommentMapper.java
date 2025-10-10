@@ -50,6 +50,7 @@ public class CommentMapper {
         //nie robic tego tutaj tutaj tylko proste pola w serwisie logika tam uzuplenie pola encji
 //        commentEntity.setTaskId(comment.getTaskId());
 //        commentEntity.setAuthorId(comment.getUserId());
+        return commentEntity;
     }
 
 }
