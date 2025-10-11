@@ -56,7 +56,7 @@ public class CommentController {
 
     //nowa metoda z walidacja
     @PostMapping
-    public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto){
+    public ResponseEntity<CommentDto> createComment(@RequestBody CreateCommentRequestDto requestDto){
         CommentDto comment = commentService.createComment(requestDto);
 
         return new ResponseEntity<>(comment, HttpStatus.CREATED);

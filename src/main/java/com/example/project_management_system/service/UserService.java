@@ -1,10 +1,13 @@
 package com.example.project_management_system.service;
 
 import com.example.project_management_system.User;
+import com.example.project_management_system.dto.CreateUserRequestDto;
 import com.example.project_management_system.dto.UserDto;
 import com.example.project_management_system.mapper.UserMapper;
 import com.example.project_management_system.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +17,14 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     //wstyrzkniecei userRepo
     @Autowired
-    public UserService(UserRepository userRepository , UserMapper userMapper) {
+    public UserService(UserRepository userRepository , UserMapper userMapper , PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //uzywanie metod z jpa findAll()
@@ -57,6 +62,18 @@ public class UserService {
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User id not found"));
         return userMapper.toDto(user);
+    }
+
+    public UserDto createUser(@Valid CreateUserRequestDto requestDto) {
+        User user = userMapper.toEntity(requestDto);
+
+        //hashowanie hasla
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+        user.setPassword(encodedPassword);
+
+        User savedUser = userRepository.save(user);
+
+        return userMapper.toDto(savedUser);
     }
 
     public User createUser(User user) {
