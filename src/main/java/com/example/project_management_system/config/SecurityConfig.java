@@ -1,6 +1,7 @@
 package com.example.project_management_system.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +18,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // WAŻNA ZMIANA: Na czas developmentu pozwalamy na wszystko w /api/**
-                        // To pozwoli nam łatwo testować endpointy w Postmanie bez logowania.
-                        .requestMatchers("/api/**").permitAll()
-                        .anyRequest().authenticated()
+                        //zmiana juz nie wsyzstko jets tak o dostepne dalem autoryzacje
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Rejestracja musi być publiczna
+                        .requestMatchers("/api/projects/**", "/api/tasks/**", "/api/comments/**").authenticated() // Reszta API wymaga logowania
+                        .anyRequest().permitAll() // Inne, nieznane ścieżki (np. "/") są publiczne
                 )
                 .httpBasic(withDefaults())
                 .csrf(csrf -> csrf.disable()); // Wyłączamy CSRF dla REST API
