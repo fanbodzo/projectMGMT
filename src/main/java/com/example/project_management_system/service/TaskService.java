@@ -87,13 +87,13 @@ public class TaskService {
     }
 
     //wykorzystywanie relacji w sql
-    public Task createTask(Task task , Long projectId , Long assigneeId) {
-        Project foundProject = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Project not found"));
-        task.setProject(foundProject);
-        User foundUser = userRepository.findById(assigneeId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        task.setAssignees(foundUser);
-        return taskRepository.save(task);
-    }
+//    public Task createTask(Task task , Long projectId , Long assigneeId) {
+//        Project foundProject = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Project not found"));
+//        task.setProject(foundProject);
+//        User foundUser = userRepository.findById(assigneeId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+//        task.setAssignees(foundUser);
+//        return taskRepository.save(task);
+//    }
     public TaskDto createTask(@Valid CreateTaskRequestDto requestDto){
         Project foundProject = projectRepository.findById(requestDto.getProjectId()).orElseThrow(() -> new IllegalArgumentException("Project not found"));
         User foundUser = userRepository.findById(requestDto.getAssigneeId()).orElseThrow(() -> new IllegalArgumentException("User not found"));

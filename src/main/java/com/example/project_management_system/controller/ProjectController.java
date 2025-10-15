@@ -87,15 +87,19 @@ public class ProjectController {
 //    }
     //wersja z validatorem
     @PostMapping
-    public ResponseEntity<?> createProject(@Valid @RequestBody CreateProjectRequestDto requestDto) {
-        try{
-            Project project = projectMapper.toEntity(requestDto);
-            Project createdProject = projectService.createProject(project);
-            return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
-        }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectRequestDto requestDto) {
+        //try catch nie jest juz potrzebne kiedy mam global exception handler , zostawiam tutaj jako przykla
+        //do notatek na pozniej
+//        try{
+//            Project project = projectMapper.toEntity(requestDto);
+//            Project createdProject = projectService.createProject(project);
+//            return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+//        }catch(IllegalArgumentException e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+        ProjectDto projectDto = projectService.createProject(requestDto);
 
+        return new ResponseEntity<>(projectDto, HttpStatus.CREATED);
 
     }
     @PutMapping("/{id}")

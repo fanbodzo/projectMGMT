@@ -2,12 +2,14 @@ package com.example.project_management_system.service;
 
 import com.example.project_management_system.Project;
 import com.example.project_management_system.User;
+import com.example.project_management_system.dto.CreateProjectRequestDto;
 import com.example.project_management_system.dto.ProjectDto;
 import com.example.project_management_system.dto.UserDto;
 import com.example.project_management_system.mapper.ProjectMapper;
 import com.example.project_management_system.mapper.UserMapper;
 import com.example.project_management_system.repository.ProjectRepository;
 import com.example.project_management_system.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +46,12 @@ public class ProjectService {
         return projectMapper.toDto(project);
     }
 
-    public Project createProject(Project project){
-        if(projectRepository.existsByProjectKey(project.getProjectKey())){
-            throw new IllegalArgumentException("Project with this key" + project.getProjectKey() + " already exists");
-        }
-        //return null; nie rzucac null bo w api bedzie to jako OK i zaminilem koljencscia i usunalem ! z if
+    public ProjectDto createProject(@Valid CreateProjectRequestDto requestDto) {
+        Project project = projectMapper.toEntity(requestDto);
 
-        return projectRepository.save(project);
+        Project savedProject = projectRepository.save(project);
+
+        return projectMapper.toDto(savedProject);
     }
 
     public Project updateProject(Long id, Project project) {

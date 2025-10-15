@@ -76,16 +76,16 @@ public class UserService {
         return userMapper.toDto(savedUser);
     }
 
-    public User createUser(User user) {
-        if(!userRepository.existsByUsername(user.getUsername())) {
-            if(!userRepository.existsByEmail(user.getEmail())) {
-                user.setPassword("hashed_"+user.getPassword());
-                return userRepository.save(user);
-            }
-            throw new IllegalArgumentException("Email address already in use");
-        }
-        throw new IllegalArgumentException("Username already exists");
-    }
+//    public User createUser(User user) {
+//        if(!userRepository.existsByUsername(user.getUsername())) {
+//            if(!userRepository.existsByEmail(user.getEmail())) {
+//                user.setPassword("hashed_"+user.getPassword());
+//                return userRepository.save(user);
+//            }
+//            throw new IllegalArgumentException("Email address already in use");
+//        }
+//        throw new IllegalArgumentException("Username already exists");
+//    }
 
 
 }
